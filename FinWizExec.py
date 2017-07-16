@@ -5,7 +5,7 @@ from sys import platform
 from FinWizExcept import ArgumentError
 from FinWizData import RUNTIME_DATA, CURRENT_USER, MONEY_SOURCE
 from FinWizEnum import eInputCommand, eMoneySource, eDateFormat, eRunTimeKey
-from FinWizDataModel import Expense, Date
+from FinWizDataModel import Expense, Revenue, Date
 
 def arg_exec_list(*args):
 	grouped_exec = []
@@ -36,14 +36,21 @@ def exec_expense(*args):
 	RUNTIME_DATA[CURRENT_USER][eRunTimeKey.EXPENSE].append(tmpExpense)
 
 def exec_revenue(*args):
-	print('Revenue:', args)
+	if len(args) != 3:
+		raise ArgumentError('exec_revenue', 'Arguments provided: ' + str(len(args)) + ' Arguments required: 3')
+
+	tmpRevenue = Revenue(Date(eDateFormat.MIDDLE_ENDIAN, args[0]), MONEY_SOURCE[args[1]], float(args[2]))
+	RUNTIME_DATA[CURRENT_USER][eRunTimeKey.REVENUE].append(tmpRevenue)
 
 def print_expense(*args):
+	print('Expenses: ')
 	for exp in RUNTIME_DATA[CURRENT_USER][eRunTimeKey.EXPENSE]:
 		print(exp)
 
 def print_revenue(*args):
-	print('Printing revenue...')
+	print('Revenue: ')
+	for rev in RUNTIME_DATA[CURRENT_USER][eRunTimeKey.REVENUE]:
+		print(rev)
 
 EXEC_ARG_TABLE = {
 	eInputCommand.SET : {
@@ -72,14 +79,3 @@ EXEC_TABLE = {
 	eInputCommand.SET   : exec_command,
 	eInputCommand.PRINT : exec_command
 }
-
-if __name__ == '__main__':
-	while True:
-		userInput = input("Enter arg list: ")
-		if userInput == 'q':
-			break
-		userInputList = userInput.split()
-		try:
-			EXEC_TABLE[eInputCommand.SET](*userInputList)
-		except ArgumentError as ae:
-			print(ae.message)

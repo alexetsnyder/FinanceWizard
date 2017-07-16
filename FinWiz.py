@@ -1,22 +1,19 @@
 #FinWiz
 
+import readline
 from FinWizEnum import eInputCommand 
 from FinWizData import COMMANDS, RUNTIME_DATA
 from FinWizExec import EXEC_TABLE
 from FinWizExcept import ParseError, ExecError, ArgumentError
 
 def print_prompt():
-	print('fwc> ', end='')
-
-def enter_input():
-	return input()
+	return input('fwc> ')
 
 def clean_input(userInput):
 	return userInput.strip()
 
 def input_to_list(cleanInput):
 	inputList = cleanInput.split()
-
 	arg_list = []
 	index = 0
 	while index < len(inputList):
@@ -29,8 +26,6 @@ def input_to_list(cleanInput):
 		else:
 			arg_list.append(inputList[index])
 			index += 1
-
-	print(arg_list)
 	return arg_list
 
 def parse_input(inputList):
@@ -54,8 +49,7 @@ def fin_wiz_exec(command, inputList):
 
 def main_loop():
 	while True:
-		print_prompt()
-		userInput = enter_input()
+		userInput = print_prompt()
 		cleanInput = clean_input(userInput)
 		inputList = input_to_list(cleanInput)
 

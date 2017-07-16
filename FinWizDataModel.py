@@ -5,18 +5,31 @@ from FinWizEnum import eDateFormat, eDate, eMonth, ePlace, eNull
 from FinWizData import DATE_LOOKUP_TABLE, INT_TO_MONTH, MONTH_TO_INT, DAYS_IN_MONTH, SOURCE_TO_STRING
 
 class Expense:
-	def __init__(self, date, description, cost, category, source):
+	def __init__(self, date, name, cost, category, source):
 		self._date = date
-		self._description = description
+		self._name = name
 		self._cost = cost
 		self._category = category
 		self._source = source
 
 	def __str__(self):
-		return '| ' + str(self._date) + ' | ' + self._description + ' | ' + str(self._cost) + ' | ' + self._category + ' | ' + SOURCE_TO_STRING[self._source]  + ' |' 
+		return '| ' + str(self._date) + ' | ' + self._name + ' | ' + str(self._cost) + ' | ' + self._category + ' | ' + SOURCE_TO_STRING[self._source]  + ' |' 
 
 	def __repr__(self):
-		return 'Date: ' + str(self._date) + ' Description: ' + self._description + ' Cost: ' + str(self._cost) + ' Category: ' + self._category + ' Source: ' + SOURCE_TO_STRING[self._source] 
+		return 'Date: ' + str(self._date) + ' Name: ' + self._name + ' Cost: ' + str(self._cost) + ' Category: ' + self._category + ' Source: ' + SOURCE_TO_STRING[self._source] 
+
+class Revenue:
+	def __init__(self, date, source, amount):
+		self._date = date
+		self._amount = amount
+		self._category = 'Revenue'
+		self._source = source
+
+	def __str__(self):
+		return '| ' + str(self._date) + ' | ' + SOURCE_TO_STRING[self._source]  +  ' | ' + str(self._amount) + ' | ' + self._category + ' |' 
+
+	def __repr__(self):
+		return 'Date: ' + str(self._date) + ' Source: ' + SOURCE_TO_STRING[self._source] + ' Amount: ' + str(self._amount) + ' Category: ' + self._category 
 
 class Date:
 	def __init__(self, dateFormat, dateStr):

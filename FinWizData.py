@@ -21,13 +21,17 @@ COMMANDS = {
 }
 
 MONEY_SOURCE = {
-	'cash' : eMoneySource.CASH,
-	'bank' : eMoneySource.BANK
+	'cash'  : eMoneySource.CASH,
+	'bank'  : eMoneySource.BANK,
+	'work'  : eMoneySource.WORK,
+	'extra' : eMoneySource.EXTRA
 }
 
 SOURCE_TO_STRING = {
-	eMoneySource.CASH : 'cash',
-	eMoneySource.BANK : 'bank'
+	eMoneySource.CASH    : 'cash',
+	eMoneySource.BANK    : 'bank',
+	eMoneySource.WORK    : 'work',
+	eMoneySource.EXTRA   : 'revenue'
 }
 
 DATE_LOOKUP_TABLE = {

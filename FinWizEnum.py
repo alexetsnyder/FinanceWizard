@@ -21,9 +21,11 @@ class eRunTimeKey(Enum):
 	REVENUE = 2
 
 class eMoneySource(Enum):
-	NULL = 0
-	BANK = 1
-	CASH = 2
+	NULL  = 0
+	BANK  = 1
+	CASH  = 2
+	WORK  = 3
+	EXTRA = 4
 
 class eDateFormat(Enum):
 	NULL          = 0
