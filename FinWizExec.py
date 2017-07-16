@@ -2,8 +2,10 @@
 
 from os import system
 from sys import platform
-from FinWizEnum import eInputCommand
 from FinWizExcept import ArgumentError
+from FinWizData import RUNTIME_DATA, CURRENT_USER, MONEY_SOURCE
+from FinWizEnum import eInputCommand, eMoneySource, eDateFormat, eRunTimeKey
+from FinWizDataModel import Expense, Date
 
 def arg_exec_list(*args):
 	grouped_exec = []
@@ -15,10 +17,10 @@ def arg_exec_list(*args):
 					break
 	return grouped_exec
 
-def quit_loop(*args):
+def exec_quit(*args):
 	raise SystemExit
 
-def clear(*args):
+def exec_clear(*args):
 	if platform == 'win32':
 		system('cls')
 	elif platform == 'linux':
@@ -27,28 +29,48 @@ def clear(*args):
 		print('Lazy programmer need to look up more cases for os.platform...')
 
 def exec_expense(*args):
-	print('Expense:', args)
+	if len(args) != 5:
+		raise ArgumentError('exec_expense', 'Arguments provided: ' + str(len(args)) + ' Arguments required: 5')
+
+	tmpExpense = Expense(Date(eDateFormat.MIDDLE_ENDIAN, args[0]), args[1], float(args[2]), args[3], MONEY_SOURCE[args[4]])
+	RUNTIME_DATA[CURRENT_USER][eRunTimeKey.EXPENSE].append(tmpExpense)
 
 def exec_revenue(*args):
 	print('Revenue:', args)
 
-SET_TABLE = {
-	'-exp' : exec_expense,
-	'-rev' : exec_revenue
+def print_expense(*args):
+	for exp in RUNTIME_DATA[CURRENT_USER][eRunTimeKey.EXPENSE]:
+		print(exp)
+
+def print_revenue(*args):
+	print('Printing revenue...')
+
+EXEC_ARG_TABLE = {
+	eInputCommand.SET : {
+		'-exp' : exec_expense,
+		'-rev' : exec_revenue
+	},
+	eInputCommand.PRINT : {
+		'-exp' : print_expense,
+		'-rev' : print_revenue
+	}
 }
 
-def exec_set(*args):
+def exec_command(command, *args):
 	exec_arg_list = arg_exec_list(*args)
 	for exec_arg in exec_arg_list:
 		try:
-			SET_TABLE[exec_arg[0]](*exec_arg[1])
-		except KeyError:
-			raise ArgumentError('exec_set', exec_arg[0])
+			EXEC_ARG_TABLE[command][exec_arg[0]](*exec_arg[1])
+		except KeyError as keyError:
+			print(keyError)
+			raise ArgumentError('exec', exec_arg[0])
+
 
 EXEC_TABLE = {
-	eInputCommand.QUIT  : quit_loop,
-	eInputCommand.CLEAR : clear,
-	eInputCommand.SET   : exec_set
+	eInputCommand.QUIT  : exec_quit,
+	eInputCommand.CLEAR : exec_clear,
+	eInputCommand.SET   : exec_command,
+	eInputCommand.PRINT : exec_command
 }
 
 if __name__ == '__main__':

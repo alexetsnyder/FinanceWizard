@@ -8,15 +8,26 @@ COMMANDS = {
 	'add'   : eInputCommand.SET,
 	'read'  : eInputCommand.GET,
 	'print' : eInputCommand.PRINT,
+	'p'     : eInputCommand.PRINT,
 
 	'clear' : eInputCommand.CLEAR,
 	'cls'   : eInputCommand.CLEAR,
 	'reset' : eInputCommand.CLEAR,
-	
+
 	'quit'  : eInputCommand.QUIT,
 	'q'     : eInputCommand.QUIT,
 	'end'   : eInputCommand.QUIT,
 	'exit'  : eInputCommand.QUIT
+}
+
+MONEY_SOURCE = {
+	'cash' : eMoneySource.CASH,
+	'bank' : eMoneySource.BANK
+}
+
+SOURCE_TO_STRING = {
+	eMoneySource.CASH : 'cash',
+	eMoneySource.BANK : 'bank'
 }
 
 DATE_LOOKUP_TABLE = {
@@ -82,4 +93,11 @@ DAYS_IN_MONTH = {
 	eMonth.DECEMBER  : 31
 }
 
-RUNTIME_DATA = {}
+CURRENT_USER = 'Admin'
+
+RUNTIME_DATA = { 
+	CURRENT_USER : {
+		eRunTimeKey.EXPENSE : [],
+		eRunTimeKey.REVENUE : []
+	}
+}

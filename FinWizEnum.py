@@ -4,18 +4,23 @@ from enum import Enum
 
 class eInputCommand(Enum):
 	NULL    = 0
-	EMPTY   = 1
-	LOAD    = 2
-	SAVE    = 3
-	QUIT    = 4
-	INVALID = 5
-	SET     = 6
-	GET     = 7
-	PRINT   = 8
-	DELETE  = 9
-	CLEAR   = 10
+	INVALID = 1
+	EMPTY   = 2
+	LOAD    = 3
+	SAVE    = 4
+	QUIT    = 5
+	SET     = 7
+	GET     = 8
+	PRINT   = 9
+	DELETE  = 10
+	CLEAR   = 11
 
-class eMoneySourceType(Enum):
+class eRunTimeKey(Enum):
+	NULL    = 0
+	EXPENSE = 1
+	REVENUE = 2
+
+class eMoneySource(Enum):
 	NULL = 0
 	BANK = 1
 	CASH = 2

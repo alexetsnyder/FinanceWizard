@@ -1,12 +1,12 @@
 #FinWiz
 
 from FinWizEnum import eInputCommand 
-from FinWizData import COMMANDS
+from FinWizData import COMMANDS, RUNTIME_DATA
 from FinWizExec import EXEC_TABLE
 from FinWizExcept import ParseError, ExecError, ArgumentError
 
 def print_prompt():
-	print('fin> ', end='')
+	print('fwc> ', end='')
 
 def enter_input():
 	return input()
@@ -15,23 +15,42 @@ def clean_input(userInput):
 	return userInput.strip()
 
 def input_to_list(cleanInput):
-	return cleanInput.split()
+	inputList = cleanInput.split()
+
+	arg_list = []
+	index = 0
+	while index < len(inputList):
+		if inputList[index][0] == '\'' or inputList[index][0] == '\"':
+			for j in range(index, len(inputList)):
+				if inputList[j][-1] == '\'' or inputList[j][-1] == '\"':
+					arg_list.append(' '.join(inputList[index:j+1])[1:-1])
+					index = j + 1
+					break
+		else:
+			arg_list.append(inputList[index])
+			index += 1
+
+	print(arg_list)
+	return arg_list
 
 def parse_input(inputList):
 	command = eInputCommand.NULL
 	try:
 		command = COMMANDS[inputList[0]]
 	except KeyError:
-		raise ParseError('Error: In parse_input: Command not found in COMMANDS...')
+		print('Error: In parse_input: Command not found in COMMANDS...')
+		command = eInputCommand.INVALID
 	except IndexError:
 		command = eInputCommand.EMPTY
 	return command
 
 def fin_wiz_exec(command, inputList):
 	try:
-		EXEC_TABLE[command](*inputList)
+		EXEC_TABLE[command](command, *inputList)
 	except KeyError:
-		raise ExecError('Error: In fin_wiz_exec: Command not found in EXEC_TABLE...')
+		print('Error: In fin_wiz_exec: Command not found in EXEC_TABLE...')
+	except ArgumentError as argError:
+		print(argError.message)
 
 def main_loop():
 	while True:
@@ -40,20 +59,12 @@ def main_loop():
 		cleanInput = clean_input(userInput)
 		inputList = input_to_list(cleanInput)
 
-		try:
-			command = parse_input(inputList)
-			if command == eInputCommand.EMPTY:
-				continue
-		except ParseError as parseError:
-			print(parseError)
+		command = parse_input(inputList)
+		if command == eInputCommand.EMPTY or command == eInputCommand.INVALID:
 			continue
 
 		try:
 			fin_wiz_exec(command, inputList[1:])
-		except ExecError as execError:
-			print(execError.message)
-		except ArgumentError as argError:
-			print(argError.message)
 		except SystemExit:
 			break
 
