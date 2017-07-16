@@ -6,6 +6,11 @@ class FinWizError(Exception):
 	"""Base class for exceptions in this project"""
 	pass
 
+class ParseError(FinWizError):
+	"""Exeptions cause by Invalid command"""
+	def __init__(self, message):
+		self.message = message
+
 class DataError(FinWizError):
 	"""Base class for data exceptions in this project"""
 	pass
@@ -21,3 +26,13 @@ class DateError(DataError):
 			self.message = 'Error: In ' + place + ': Invalid Day...'
 		else:
 			self.message = 'Error: In ' + place + ': ' +  message + '...'
+
+class ExecError(FinWizError):
+	"""Exceptions for the FinWizExec Module"""
+	def __init__(self, message):
+		self.message = message
+
+class ArgumentError(ExecError):
+	"""Exceptions for incorrect arguments"""
+	def __init__(self, place, arg):
+		self.message = 'Error: In ' + place + ': Bad Argument provided ' + arg 

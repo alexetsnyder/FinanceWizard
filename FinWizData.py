@@ -8,6 +8,11 @@ COMMANDS = {
 	'add'   : eInputCommand.SET,
 	'read'  : eInputCommand.GET,
 	'print' : eInputCommand.PRINT,
+
+	'clear' : eInputCommand.CLEAR,
+	'cls'   : eInputCommand.CLEAR,
+	'reset' : eInputCommand.CLEAR,
+	
 	'quit'  : eInputCommand.QUIT,
 	'q'     : eInputCommand.QUIT,
 	'end'   : eInputCommand.QUIT,

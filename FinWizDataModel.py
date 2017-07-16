@@ -1,7 +1,7 @@
 #FinWizDataModel
 
-from FinWizEnum import *
-from FinWizData import *
+from FinWizEnum import eDateFormat, eDate, eMonth, ePlace, eNull
+from FinWizData import DATE_LOOKUP_TABLE, INT_TO_MONTH, MONTH_TO_INT, DAYS_IN_MONTH
 from FinWizExcept import DateError
 
 class Expense:

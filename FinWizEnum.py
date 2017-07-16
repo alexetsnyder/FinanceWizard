@@ -4,14 +4,16 @@ from enum import Enum
 
 class eInputCommand(Enum):
 	NULL    = 0
-	LOAD    = 1
-	SAVE    = 2
-	QUIT    = 3
-	INVALID = 4
-	SET     = 5
-	GET     = 6
-	PRINT   = 7
-	DELETE  = 8
+	EMPTY   = 1
+	LOAD    = 2
+	SAVE    = 3
+	QUIT    = 4
+	INVALID = 5
+	SET     = 6
+	GET     = 7
+	PRINT   = 8
+	DELETE  = 9
+	CLEAR   = 10
 
 class eMoneySourceType(Enum):
 	NULL = 0
