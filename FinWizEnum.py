@@ -15,6 +15,12 @@ class eInputCommand(Enum):
 	DELETE  = 10
 	CLEAR   = 11
 
+class eInputControl(Enum):
+	NULL    = 0
+	NO_ARGS = 1
+	EXP     = 2
+	REV     = 3
+
 class eRunTimeKey(Enum):
 	NULL    = 0
 	EXPENSE = 1

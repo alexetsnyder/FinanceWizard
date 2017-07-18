@@ -20,6 +20,12 @@ COMMANDS = {
 	'exit'  : eInputCommand.QUIT
 }
 
+CONTROLS = {
+	''     : eInputControl.NO_ARGS,
+	'-exp' : eInputControl.EXP,
+	'-rev' : eInputControl.REV 
+}
+
 MONEY_SOURCE = {
 	'cash'  : eMoneySource.CASH,
 	'bank'  : eMoneySource.BANK,
@@ -98,6 +104,7 @@ DAYS_IN_MONTH = {
 }
 
 CURRENT_USER = 'Admin'
+DATE_FORMAT = eDateFormat.MIDDLE_ENDIAN
 
 RUNTIME_DATA = { 
 	CURRENT_USER : {

@@ -2,7 +2,7 @@
 
 from FinWizExcept import DateError
 from FinWizEnum import eDateFormat, eDate, eMonth, ePlace, eNull
-from FinWizData import DATE_LOOKUP_TABLE, INT_TO_MONTH, MONTH_TO_INT, DAYS_IN_MONTH, SOURCE_TO_STRING
+from FinWizData import *
 
 class Expense:
 	def __init__(self, date, name, cost, category, source):
@@ -32,14 +32,17 @@ class Revenue:
 		return 'Date: ' + str(self._date) + ' Source: ' + SOURCE_TO_STRING[self._source] + ' Amount: ' + str(self._amount) + ' Category: ' + self._category 
 
 class Date:
-	def __init__(self, dateFormat, dateStr):
+	def __init__(self, dateStr):
 		self._year = eNull.INT
 		self._day = eNull.INT
 		self._month = eMonth.NULL
+		
+		self.initialize(DATE_FORMAT, dateStr.strip())
+
+	def initialize(self, dateFormat, dateStr):
 		self._dateFormat = dateFormat
 
-		cleanDateStr = dateStr.strip()
-		symbol = self.check_date_str(cleanDateStr)
+		symbol = self.check_date_str(dateStr)
 		if symbol == eNull.STR:
 			raise DateError('__init__', eDate.NULL, 'symbol returned NULL')
 
@@ -64,6 +67,21 @@ class Date:
 			return 'Format: ' + str(self._dateFormat) + '\n(' + str(MONTH_TO_INT[self._month]) + '/' + str(self._day) + '/' + str(self._year) + ')'
 		elif self._dateFormat == eDateFormat.LITTLE_ENDIAN:
 			return 'Format: ' + str(self._dateFormat) + '\n(' + str(self._day) + '/' + str(MONTH_TO_INT[self._month]) + '/' + str(self._year) + ')'
+
+	def year(self, year=None):
+		if year == None:
+			return self._year
+		self._year = year
+
+	def month(self, month=None):
+		if month == None:
+			return MONTH_TO_INT[self._month]
+		self._month = month
+
+	def day(self, day=None):
+		if day == None:
+			return self._day
+		self._day = day
 
 	def check_date_str(self, dateStr):
 		sym_count = 0

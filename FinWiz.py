@@ -1,8 +1,8 @@
 #FinWiz
 
 import readline
-from FinWizEnum import eInputCommand 
-from FinWizData import COMMANDS, RUNTIME_DATA
+from FinWizEnum import *
+from FinWizData import *
 from FinWizExec import EXEC_TABLE
 from FinWizExcept import ParseError, ExecError, ArgumentError
 
@@ -39,11 +39,30 @@ def parse_input(inputList):
 		command = eInputCommand.EMPTY
 	return command
 
+def parse_args(*args):
+	i = 0
+	while i < len(args):
+		if args[i][0] == '-':
+			for j in range(i, len(args)):
+				if j == len(args)-1 or args[j+1][0] == '-':
+					yield (CONTROLS[args[i]], args[i+1:j+1])
+					i = j + 1 
+					break
+		else:
+			raise ArgumentError('parse_args', 'Args without a control.')
+
 def fin_wiz_exec(command, inputList):
 	try:
-		EXEC_TABLE[command](command, *inputList)
+		loopRanOnceFlag = False
+		for control, arglist in parse_args(*inputList):
+			EXEC_TABLE[command][control](*arglist)
+			loopRanOnceFlag = True
+
+		if not loopRanOnceFlag:
+			EXEC_TABLE[command][eInputControl.NO_ARGS]()
+
 	except KeyError:
-		print('Error: In fin_wiz_exec: Command not found in EXEC_TABLE...')
+	 	print('Error: In fin_wiz_exec: Command not found in EXEC_TABLE...')
 	except ArgumentError as argError:
 		print(argError.message)
 
