@@ -8,7 +8,7 @@ class Expense:
 	def __init__(self, date, name, cost, category, source):
 		self._date = date
 		self._name = name
-		self._cost = cost
+		self._cost = float(cost)
 		self._category = category
 		self._source = source
 
@@ -21,7 +21,7 @@ class Expense:
 class Revenue:
 	def __init__(self, date, source, amount):
 		self._date = date
-		self._amount = amount
+		self._amount = float(amount)
 		self._category = 'Revenue'
 		self._source = source
 

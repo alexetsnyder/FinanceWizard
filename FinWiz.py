@@ -3,8 +3,8 @@
 import readline
 from FinWizEnum import *
 from FinWizData import *
+from FinWizExcept import *
 from FinWizExec import EXEC_TABLE
-from FinWizExcept import ParseError, ExecError, ArgumentError
 
 def print_prompt():
 	return input('fwc> ')
@@ -55,7 +55,10 @@ def fin_wiz_exec(command, inputList):
 	try:
 		loopRanOnceFlag = False
 		for control, arglist in parse_args(*inputList):
-			EXEC_TABLE[command][control](*arglist)
+			if arglist:
+				EXEC_TABLE[command][control](*arglist)
+			else:
+				EXEC_TABLE[command][control]()
 			loopRanOnceFlag = True
 
 		if not loopRanOnceFlag:
@@ -63,8 +66,14 @@ def fin_wiz_exec(command, inputList):
 
 	except KeyError:
 	 	print('Error: In fin_wiz_exec: Command not found in EXEC_TABLE...')
+	except TypeError:
+		print('Error: Incorrect number of arguments...')
+	except ValueError:
+		print('Error: Used a character when a number was required...')
 	except ArgumentError as argError:
 		print(argError.message)
+	except DateError as dateError:
+		print(dateError.message)
 
 def main_loop():
 	while True:

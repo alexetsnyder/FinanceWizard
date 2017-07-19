@@ -26,12 +26,12 @@ def exec_add_revenue(date, source, amount):
 	RUNTIME_DATA[CURRENT_USER][eRunTimeKey.REVENUE].append(Revenue(Date(date), MONEY_SOURCE[source], amount))
 
 #Print Command
-def exec_print_revenue(*args):
+def exec_print_revenue():
 	print('Revenue: ')
 	for rev in RUNTIME_DATA[CURRENT_USER][eRunTimeKey.REVENUE]:
 		print(rev)
 
-def exec_print_expense(*args):
+def exec_print_expense():
 	print('Expenses: ')
 	for exp in RUNTIME_DATA[CURRENT_USER][eRunTimeKey.EXPENSE]:
 		print(exp)
