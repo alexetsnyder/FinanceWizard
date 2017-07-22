@@ -1,32 +1,16 @@
 #FinWiz
 
 import readline
-from FinWizEnum import *
 from FinWizData import *
-from FinWizExcept import *
-from FinWizExec import EXEC_TABLE
+import FinWizExec as fwe
+import FinWizExec as fwExec
+import FinWizHelperFunc as fwHelp
 
 def print_prompt():
 	return input('fwc> ')
 
 def clean_input(userInput):
 	return userInput.strip()
-
-def input_to_list(cleanInput):
-	inputList = cleanInput.split()
-	arg_list = []
-	index = 0
-	while index < len(inputList):
-		if inputList[index][0] == '\'' or inputList[index][0] == '\"':
-			for j in range(index, len(inputList)):
-				if inputList[j][-1] == '\'' or inputList[j][-1] == '\"':
-					arg_list.append(' '.join(inputList[index:j+1])[1:-1])
-					index = j + 1
-					break
-		else:
-			arg_list.append(inputList[index])
-			index += 1
-	return arg_list
 
 def parse_input(inputList):
 	command = eInputCommand.NULL
@@ -39,47 +23,14 @@ def parse_input(inputList):
 		command = eInputCommand.EMPTY
 	return command
 
-def parse_args(*args):
-	i = 0
-	while i < len(args):
-		if args[i][0] == '-':
-			for j in range(i, len(args)):
-				if j == len(args)-1 or args[j+1][0] == '-':
-					yield (CONTROLS[args[i]], args[i+1:j+1])
-					i = j + 1 
-					break
-		else:
-			raise ArgumentError('parse_args', 'Args without a control.')
-
 def fin_wiz_exec(command, inputList):
-	try:
-		loopRanOnceFlag = False
-		for control, arglist in parse_args(*inputList):
-			if arglist:
-				EXEC_TABLE[command][control](*arglist)
-			else:
-				EXEC_TABLE[command][control]()
-			loopRanOnceFlag = True
-
-		if not loopRanOnceFlag:
-			EXEC_TABLE[command][eInputControl.NO_ARGS]()
-
-	except KeyError:
-	 	print('Error: In fin_wiz_exec: Command not found in EXEC_TABLE...')
-	except TypeError:
-		print('Error: Incorrect number of arguments...')
-	except ValueError:
-		print('Error: Used a character when a number was required...')
-	except ArgumentError as argError:
-		print(argError.message)
-	except DateError as dateError:
-		print(dateError.message)
+	fwExec.exec_command(command, inputList)
 
 def main_loop():
 	while True:
 		userInput = print_prompt()
 		cleanInput = clean_input(userInput)
-		inputList = input_to_list(cleanInput)
+		inputList = fwHelp.input_to_list(cleanInput)
 
 		command = parse_input(inputList)
 		if command == eInputCommand.EMPTY or command == eInputCommand.INVALID:

@@ -36,3 +36,8 @@ class ArgumentError(ExecError):
 	"""Exceptions for incorrect arguments"""
 	def __init__(self, place, arg):
 		self.message = 'Error: In ' + place + ': Bad Argument provided ' + arg 
+
+class ControlError(ExecError):
+	"""Exceptions for incorrect controls"""
+	def __init__(self, place, control):
+		self.message = 'Error: In ' + place + ': Bad Control provided: ' + str(control); 

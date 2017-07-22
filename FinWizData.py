@@ -3,8 +3,8 @@
 from FinWizEnum import *
 
 COMMANDS = {
-	'load'  : eInputCommand.LOAD,
-	'save'  : eInputCommand.SAVE,
+	'load'  : eInputCommand.IMPORT,
+	'save'  : eInputCommand.EXPORT,
 	'add'   : eInputCommand.SET,
 	'read'  : eInputCommand.GET,
 	'print' : eInputCommand.PRINT,
@@ -20,10 +20,21 @@ COMMANDS = {
 	'exit'  : eInputCommand.QUIT
 }
 
-CONTROLS = {
-	''     : eInputControl.NO_ARGS,
-	'-exp' : eInputControl.EXP,
-	'-rev' : eInputControl.REV 
+FUNCTIONS = {
+	'-count' : eArgFunction.SUM,
+	'-sum'   : eArgFunction.SUM,
+	'-all'   : eArgFunction.ALL,
+	'-some'  : eArgFunction.SOME,
+	'-one'   : eArgFunction.ONE
+}
+
+DATA_KEYS = {
+	':exp'  : eDataKey.EXP,
+	':rev'  : eDataKey.REV,
+	':user' : eDataKey.USER,
+	':bank' : eDataKey.BANK,
+	':date' : eDataKey.DATE,
+	':file' : eDataKey.FILE
 }
 
 MONEY_SOURCE = {
@@ -108,7 +119,7 @@ DATE_FORMAT = eDateFormat.MIDDLE_ENDIAN
 
 RUNTIME_DATA = { 
 	CURRENT_USER : {
-		eRunTimeKey.EXPENSE : [],
-		eRunTimeKey.REVENUE : []
+		eDataKey.EXP : [],
+		eDataKey.REV : []
 	}
 }

@@ -6,8 +6,8 @@ class eInputCommand(Enum):
 	NULL    = 0
 	INVALID = 1
 	EMPTY   = 2
-	LOAD    = 3
-	SAVE    = 4
+	IMPORT  = 3
+	EXPORT  = 4
 	QUIT    = 5
 	SET     = 7
 	GET     = 8
@@ -15,16 +15,21 @@ class eInputCommand(Enum):
 	DELETE  = 10
 	CLEAR   = 11
 
-class eInputControl(Enum):
-	NULL    = 0
-	NO_ARGS = 1
-	EXP     = 2
-	REV     = 3
+class eArgFunction(Enum):
+	NULL = 0
+	SUM  = 1
+	ALL  = 2
+	SOME = 3
+	ONE  = 4
 
-class eRunTimeKey(Enum):
+class eDataKey(Enum):
 	NULL    = 0
-	EXPENSE = 1
-	REVENUE = 2
+	EXP     = 1
+	REV     = 2
+	BANK    = 3
+	DATE    = 4	
+	USER    = 5
+	FILE    = 6
 
 class eMoneySource(Enum):
 	NULL  = 0

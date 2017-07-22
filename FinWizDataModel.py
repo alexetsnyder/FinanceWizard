@@ -1,8 +1,8 @@
 #FinWizDataModel
 
-from FinWizExcept import DateError
-from FinWizEnum import eDateFormat, eDate, eMonth, ePlace, eNull
+from FinWizEnum import *
 from FinWizData import *
+import FinWizExcept as fwExcept
 
 class Expense:
 	def __init__(self, date, name, cost, category, source):
@@ -44,7 +44,7 @@ class Date:
 
 		symbol = self.check_date_str(dateStr)
 		if symbol == eNull.STR:
-			raise DateError('__init__', eDate.NULL, 'symbol returned NULL')
+			raise fwExcept.DateError('__init__', eDate.NULL, 'symbol returned NULL')
 
 		self.fill_date_pos(DATE_LOOKUP_TABLE[dateFormat][ePlace.FIRST], dateStr.partition(symbol)[0])
 		self.fill_date_pos(DATE_LOOKUP_TABLE[dateFormat][ePlace.SECOND], dateStr.partition(symbol)[2].partition(symbol)[0])
@@ -97,7 +97,7 @@ class Date:
 					return eNull.STR
 
 		if sym_count > 2:
-			raise DateError('check_date_str', eDate.NULL, 'Too many symbols in date...')
+			raise fwExcept.DateError('check_date_str', eDate.NULL, 'Too many symbols in date...')
 
 		return symbol
 
@@ -105,17 +105,17 @@ class Date:
 		if datePos == eDate.YEAR:
 			tmpYear = int(val)
 			if len(val) > 4 or tmpYear < 0:
-				raise DateError('fill_date_pos', eDate.YEAR)
+				raise fwExcept.DateError('fill_date_pos', eDate.YEAR)
 			self._year = tmpYear		
 		elif datePos == eDate.MONTH:
 			tmpMonth = int(val)
 			if len(val) > 2 or tmpMonth < 1 or tmpMonth > 12:
-				raise DateError('fill_date_pos', eDate.MONTH)
+				raise fwExcept.DateError('fill_date_pos', eDate.MONTH)
 			self._month = INT_TO_MONTH[tmpMonth]
 		elif datePos == eDate.DAY:
 			tmpDay = int(val)
 			if len(val) > 2 or tmpDay < 1 or tmpDay > 31:
-				raise DateError('fill_date_pos', eDate.DAY)
+				raise fwExcept.DateError('fill_date_pos', eDate.DAY)
 			self._day = tmpDay
 
 	def check_days_in_month(self):
@@ -125,10 +125,10 @@ class Date:
 			if (self._year % 4 == 0 and self._year % 100 != 0) or self._year % 400 == 0:
 				max_days += 1
 		elif self._month == eMonth.NULL:
-			raise DateError('check_days_in_month', eDate.MONTH)
+			raise fwExcept.DateError('check_days_in_month', eDate.MONTH)
 
 		if self._day > max_days:
-			raise DateError('check_days_in_month', eDate.DAY)
+			raise fwExcept.DateError('check_days_in_month', eDate.DAY)
 
 	def format_digits(self, datePart):
 		if datePart == eDate.YEAR:
@@ -145,7 +145,7 @@ class Date:
 				day_str = '0' + day_str
 			return day_str
 		else:
-			raise DateError('print_digits', eDate.NULL, 'datePart should not be NULL...')
+			raise fwExcept.DateError('print_digits', eDate.NULL, 'datePart should not be NULL...')
 
 
 if __name__ == '__main__':
@@ -177,7 +177,7 @@ if __name__ == '__main__':
 			for i in range(1, 13):
 				try:
 					date = Date(eDateFormat.MIDDLE_ENDIAN, str(i) + '/32/2017')
-				except DateError as dateError:
+				except fwExcept.DateError as dateError:
 					print('Month:', i)
 					print(dateError.message)
 			continue
@@ -190,7 +190,7 @@ if __name__ == '__main__':
 		try:
 			date = Date(dateFormat, dateStr)
 			print(date)
-		except DateError as dateError:
+		except fwExcept.DateError as dateError:
 			print(dateError.message)
 
 
