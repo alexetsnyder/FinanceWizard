@@ -2,9 +2,24 @@
 
 import readline
 from FinWizData import *
-import FinWizExec as fwe
 import FinWizExec as fwExec
 import FinWizHelperFunc as fwHelp
+import FinWizDataModel as fwDM
+
+def login():
+	while True:
+		user = input('Enter Username: ')
+		fwExec.current_runtime = fwDM.Runtime(user)
+		if user == 'admin':
+			break
+		try:
+			fwExec.exec_import([eDataKey.USER]) 
+			break
+		except FileNotFoundError:
+			choice = input('Are you a new user? ').lower()
+			if choice == 'yes' or choice == 'y':
+				break
+			fwExec.current_runtime.remove(user)
 
 def print_prompt():
 	return input('fwc> ')
@@ -26,6 +41,11 @@ def parse_input(inputList):
 def fin_wiz_exec(command, inputList):
 	fwExec.exec_command(command, inputList)
 
+def logout():
+	if fwExec.current_runtime.user() == 'admin':
+		return
+	fwExec.exec_export([eDataKey.USER])
+
 def main_loop():
 	while True:
 		userInput = print_prompt()
@@ -42,5 +62,7 @@ def main_loop():
 			break
 
 if __name__ == '__main__':
+	login()
 	main_loop()
+	logout()
 	print('Get a job!')

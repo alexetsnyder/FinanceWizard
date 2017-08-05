@@ -8,6 +8,8 @@ import FinWizHelperFunc as  fwHelp
 import FinWizExcept as fwExcept
 import FinWizDataModel as fwDataModel
  
+current_runtime = None
+
 #Parse Arguments
 func_sym_str  = '-'
 data_sym_str  = ':'
@@ -73,7 +75,7 @@ def exec_clear():
 	elif sys.platform == 'linux':
 		os.system('clear')
 	else:
-		print('Lazy programmer need to look up more cases for os.platform...')
+		print('Lazy programmer needs to look up more cases for os.platform...')
 
 #Add Command
 def exec_add(control, *args):
@@ -89,23 +91,50 @@ def exec_add(control, *args):
 		else:
 			raise fwExcept.ControlError('exec_add', control)
 
-		RUNTIME_DATA[CURRENT_USER][data].append(item)
+		current_runtime.set(data, item) 
 
 #Print Command
 def exec_print(control):
 	for data in control:
-		for x in RUNTIME_DATA[CURRENT_USER][data]:
+		if data == eDataKey.USER:
+			for x in current_runtime.get():
+				print(x)
+			continue
+		for x in current_runtime.get(data):
 			print(x)
 
 #Import Command
 def exec_import(control, *args):
-	for i, fileKey in enumerate(control):
-		if not fileKey == eDataKey.FILE:
-			raise fwExcept.ControlError('exec_import', fileKey)	
-		with open(args[i], 'r') as dataFile:
+	for i, key in enumerate(control):
+		file = ''
+		if key == eDataKey.FILE:
+			file = args[i]
+		elif key == eDataKey.USER:
+			file = current_runtime.user() + '.txt'
+		else:
+			raise fwExcept.ControlError('exec_import', key)
+
+		with open(file, 'r') as dataFile:
 			for line in dataFile:
 				inputList = fwHelp.input_to_list(line)
 				exec_command(eInputCommand.SET, inputList)
+
+#Export Command
+def exec_export(control, *args):
+	saveContents = current_runtime.get(eDataKey.EXP) + current_runtime.get(eDataKey.REV)
+	for i, key in enumerate(control):
+		file = ''
+		if key == eDataKey.FILE:
+			file = args[i]
+		elif key == eDataKey.USER:
+			file = current_runtime.user() + '.txt'
+		else:
+			raise fwExcept.ControlError('exec_export', key)
+
+		#Dangerous overwrites at the moment
+		with open(file, 'w') as exportFile:
+				for item in saveContents:
+					exportFile.write(str(item) + '\n')
 
 #Exec Table
 EXEC_TABLE = {
@@ -114,7 +143,8 @@ EXEC_TABLE = {
 	eInputCommand.CLEAR  : exec_clear,
 	eInputCommand.SET    : exec_add,
 	eInputCommand.PRINT  : exec_print,
-	eInputCommand.IMPORT : exec_import
+	eInputCommand.IMPORT : exec_import,
+	eInputCommand.EXPORT : exec_export
 }
 
 #Main Exec Command Function

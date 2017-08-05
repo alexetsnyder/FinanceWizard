@@ -3,21 +3,24 @@
 from FinWizEnum import *
 
 COMMANDS = {
-	'load'  : eInputCommand.IMPORT,
-	'save'  : eInputCommand.EXPORT,
-	'add'   : eInputCommand.SET,
-	'read'  : eInputCommand.GET,
-	'print' : eInputCommand.PRINT,
-	'p'     : eInputCommand.PRINT,
+	'load'   : eInputCommand.IMPORT,
+	'import' : eInputCommand.IMPORT,
+	'save'   : eInputCommand.EXPORT,
+	'export' : eInputCommand.EXPORT,
 
-	'clear' : eInputCommand.CLEAR,
-	'cls'   : eInputCommand.CLEAR,
-	'reset' : eInputCommand.CLEAR,
+	'add'    : eInputCommand.SET,
+	'read'   : eInputCommand.GET,
+	'print'  : eInputCommand.PRINT,
+	'p'      : eInputCommand.PRINT,
 
-	'quit'  : eInputCommand.QUIT,
-	'q'     : eInputCommand.QUIT,
-	'end'   : eInputCommand.QUIT,
-	'exit'  : eInputCommand.QUIT
+	'clear'  : eInputCommand.CLEAR,
+	'cls'    : eInputCommand.CLEAR,
+	'reset'  : eInputCommand.CLEAR,
+
+	'quit'   : eInputCommand.QUIT,
+	'q'      : eInputCommand.QUIT,
+	'end'    : eInputCommand.QUIT,
+	'exit'   : eInputCommand.QUIT
 }
 
 FUNCTIONS = {
@@ -112,14 +115,4 @@ DAYS_IN_MONTH = {
 	eMonth.OCTOBER   : 31,
 	eMonth.NOVEMBER  : 30,
 	eMonth.DECEMBER  : 31
-}
-
-CURRENT_USER = 'Admin'
-DATE_FORMAT = eDateFormat.MIDDLE_ENDIAN
-
-RUNTIME_DATA = { 
-	CURRENT_USER : {
-		eDataKey.EXP : [],
-		eDataKey.REV : []
-	}
 }

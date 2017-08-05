@@ -1,8 +1,38 @@
 #FinWizDataModel
 
-from FinWizEnum import *
 from FinWizData import *
 import FinWizExcept as fwExcept
+
+class Runtime:
+	DATA = {}
+
+	def __init__(self, user):
+		self._user = user
+		if not user in self.DATA:
+			self.DATA[user] = { 
+				eDataKey.EXP  : [],
+				eDataKey.REV  : [],
+				eDataKey.BANK : []
+			}
+
+	def user(self):
+		return self._user
+
+	def get(self, dataKey=eDataKey.NULL):
+		if dataKey == eDataKey.NULL:
+			return self.DATA[self._user]
+		return self.DATA[self._user][dataKey]
+
+	def set(self, key, data):
+		self.DATA[self._user][key].append(data)
+
+	def remove(self, key):
+		del self.DATA[key]
+
+class Settings:
+	DATE_FORMAT = eDateFormat.MIDDLE_ENDIAN
+	def __init__(self):
+		pass
 
 class Expense:
 	def __init__(self, date, name, cost, category, source):
@@ -13,7 +43,7 @@ class Expense:
 		self._source = source
 
 	def __str__(self):
-		return '| ' + str(self._date) + ' | ' + self._name + ' | ' + str(self._cost) + ' | ' + self._category + ' | ' + SOURCE_TO_STRING[self._source]  + ' |' 
+		return ':exp ' + str(self._date) + ' \'' + self._name + '\' ' + str(self._cost) + ' \'' + self._category + '\' ' + SOURCE_TO_STRING[self._source]
 
 	def __repr__(self):
 		return 'Date: ' + str(self._date) + ' Name: ' + self._name + ' Cost: ' + str(self._cost) + ' Category: ' + self._category + ' Source: ' + SOURCE_TO_STRING[self._source] 
@@ -26,7 +56,7 @@ class Revenue:
 		self._source = source
 
 	def __str__(self):
-		return '| ' + str(self._date) + ' | ' + SOURCE_TO_STRING[self._source]  +  ' | ' + str(self._amount) + ' | ' + self._category + ' |' 
+		return ':rev ' + str(self._date) + ' ' + SOURCE_TO_STRING[self._source]  +  ' ' + str(self._amount) + ' \'' + self._category + '\''
 
 	def __repr__(self):
 		return 'Date: ' + str(self._date) + ' Source: ' + SOURCE_TO_STRING[self._source] + ' Amount: ' + str(self._amount) + ' Category: ' + self._category 
@@ -37,7 +67,7 @@ class Date:
 		self._day = eNull.INT
 		self._month = eMonth.NULL
 		
-		self.initialize(DATE_FORMAT, dateStr.strip())
+		self.initialize(Settings.DATE_FORMAT, dateStr.strip())
 
 	def initialize(self, dateFormat, dateStr):
 		self._dateFormat = dateFormat
@@ -146,7 +176,6 @@ class Date:
 			return day_str
 		else:
 			raise fwExcept.DateError('print_digits', eDate.NULL, 'datePart should not be NULL...')
-
 
 if __name__ == '__main__':
 	import sys
